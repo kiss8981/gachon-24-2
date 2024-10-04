@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public int playerHealth = 100;
+    public int playerMoney = 10000;
     public int currentWave = 1;
     public int totalResources = 0;
 
@@ -49,6 +50,11 @@ public class GameManager : Singleton<GameManager>
         {
             Debug.Log("GameOver");
         }
+    }
+
+    public void subtractMoney(int price)
+    {
+        playerMoney -= price;
     }
 
     private void NotifyHealthChanged() =>
