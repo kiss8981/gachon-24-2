@@ -5,8 +5,14 @@ public class Enemy : MonoBehaviour
     public int health;
     public float speed;
     public int target = 0;
+    public GameObject healthBar;
+
     private Collider2D coll;
     private Rigidbody2D rb;
+
+    private float maxHealthBarWidth;
+    private float healthBarWidth;
+
 
     private IEnemyState currentState;
 
@@ -31,9 +37,16 @@ public class Enemy : MonoBehaviour
         rb.isKinematic = false; // 물리 엔진에 의해 영향을 받도록 설정
     }
 
+    void Update()
+    {
+        healthBarUpdate();
+    }
+
     void Start()
     {
         SetState(new NormalState());
+
+        maxHealthBarWidth = healthBar.transform.localScale.x;
     }
 
     private void FixedUpdate() // FixedUpdate에서 호출
@@ -67,6 +80,12 @@ public class Enemy : MonoBehaviour
             GameManager.Instance.TakeDamage(1);
             Destroy(gameObject);
         }
+    }
+
+    private void healthBarUpdate()
+    {
+        healthBarWidth = (float)health / 100 * maxHealthBarWidth;
+        healthBar.transform.localScale = new Vector3(healthBarWidth, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
     }
 
     public void Freeze(float duration)
