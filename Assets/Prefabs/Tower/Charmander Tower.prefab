@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7213506616928033957}
   - component: {fileID: 5408414330923576753}
   m_Layer: 0
-  m_Name: TtakkeumTower
+  m_Name: Charmander Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 60d329c0a279d764da48323ef81ecce0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91cb5a30fc6b79e41a14bd0ea392d5c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

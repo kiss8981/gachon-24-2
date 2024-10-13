@@ -19,17 +19,13 @@ public class TowerManager : Singleton<TowerManager>
 
     void Update()
     {
-        // If the left mouse button is clicked.
         if (Input.GetMouseButtonDown(0))
         {
-            // Get the mouse position on the screen and send a raycast into the game world from that position.
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
-            // Draw the ray for debugging purposes
             Debug.DrawRay(worldPoint, Vector2.zero, Color.green, 1.0f);
 
-            // If something was hit, the RaycastHit2D.collider will not be null.
             if (hit.collider != null && hit.collider.CompareTag("BuildSite"))
             {
                 buildTile = hit.collider;
@@ -78,21 +74,16 @@ public class TowerManager : Singleton<TowerManager>
         if (!EventSystem.current.IsPointerOverGameObject() && towerBtnPressed != null)
         {
             GameObject newTower = Instantiate(towerBtnPressed.towerObject);
-            newTower.transform.position = hit.transform.position;
+            newTower.transform.position = hit.collider.bounds.center;
 
-            // Register the tower
             RegisterTower(newTower);
 
-            // Set the sorting order of the tower
             SpriteRenderer towerSpriteRenderer = newTower.GetComponent<SpriteRenderer>();
             if (towerSpriteRenderer != null)
             {
-                // Set the sorting order based on your requirements
-                // For example, setting it to a high value to bring it to the front
                 towerSpriteRenderer.sortingOrder = 2;
             }
 
-            // Buy the tower and disable drag sprite
             buyTower(towerBtnPressed.towerPrice);
             disableDragSprite();
         }

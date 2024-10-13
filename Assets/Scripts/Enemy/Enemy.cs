@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour
     private float maxHealthBarWidth;
     private float healthBarWidth;
 
-
     private IEnemyState currentState;
 
     void Awake()
@@ -32,9 +31,9 @@ public class Enemy : MonoBehaviour
             rb = gameObject.AddComponent<Rigidbody2D>();
         }
 
-        rb.gravityScale = 0; // 중력을 비활성화
-        rb.freezeRotation = true; // 회전을 고정하여 기울어지지 않도록 설정
-        rb.isKinematic = false; // 물리 엔진에 의해 영향을 받도록 설정
+        rb.gravityScale = 0;
+        rb.freezeRotation = true;
+        rb.isKinematic = false;
     }
 
     void Update()
@@ -85,7 +84,18 @@ public class Enemy : MonoBehaviour
     private void healthBarUpdate()
     {
         healthBarWidth = (float)health / 100 * maxHealthBarWidth;
-        healthBar.transform.localScale = new Vector3(healthBarWidth, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+
+        // 현재 localScale을 수정
+        healthBar.transform.localScale = new Vector3(
+            healthBarWidth,
+            healthBar.transform.localScale.y,
+            healthBar.transform.localScale.z
+        );
+
+        // 체력바의 위치를 고정된 축을 기준으로 오른쪽으로 이동시키기
+        Vector3 healthBarPosition = healthBar.transform.localPosition;
+        healthBarPosition.x = -(maxHealthBarWidth - healthBarWidth) / 2;
+        healthBar.transform.localPosition = healthBarPosition;
     }
 
     public void Freeze(float duration)

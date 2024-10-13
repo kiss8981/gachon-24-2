@@ -24,8 +24,6 @@ public class FrozenState : IEnemyState
         {
             enemy.SetState(new NormalState());
             spriteRenderer.color = Color.white;
-            enemy.gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
-
         }
     }
 }

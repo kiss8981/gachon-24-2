@@ -3,10 +3,10 @@ using UnityEngine;
 public class TtakkeumTower : Tower
 {
     [SerializeField]
-    private float lastAttackTime = 0f;  // 마지막 공격 시간
-    [SerializeField]
-    private float attackCooldown;       // 공격 대기시간
+    private float lastAttackTime = 0f; // 마지막 공격 시간
 
+    [SerializeField]
+    private float attackCooldown; // 공격 대기시간
 
     private void Update()
     {
@@ -18,15 +18,13 @@ public class TtakkeumTower : Tower
             if (nearestEnemy != null)
             {
                 Attack(nearestEnemy);
-                lastAttackTime = Time.time;  // 공격한 시간 기록
+                lastAttackTime = Time.time; // 공격한 시간 기록
             }
         }
     }
 
     public override void Attack(Enemy enemy)
     {
-        Debug.Log("TtakkeumTower is attacking!");
         enemy.TakeDamage(damage);
     }
-
 }
