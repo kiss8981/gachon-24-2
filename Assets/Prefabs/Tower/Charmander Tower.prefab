@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4779159924205394244}
   - component: {fileID: 7213506616928033957}
-  - component: {fileID: 5408414330923576753}
+  - component: {fileID: 6873482716514197212}
   m_Layer: 0
   m_Name: Charmander Tower
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5408414330923576753
+--- !u!114 &6873482716514197212
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,12 +94,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1826012343681078129}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d9ffc915313064478c375d2066b895a, type: 3}
+  m_Script: {fileID: 11500000, guid: a0825ddd3696783448bee1829ec9e110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackSpeed: 0
-  damage: 10
-  range: 10
+  damage: 0
+  range: 2
   targetingMode: 0
+  burnDuration: 3
+  burnDamagePerSecond: 1
   lastAttackTime: 0
-  attackCooldown: 10
+  attackCooldown: 5

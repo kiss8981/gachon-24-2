@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public int health;
+    public float health;
     public float speed;
     public int target = 0;
     public GameObject healthBar;
@@ -39,6 +40,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         healthBarUpdate();
+        currentState.Execute(this);
     }
 
     void Start()
@@ -48,18 +50,13 @@ public class Enemy : MonoBehaviour
         maxHealthBarWidth = healthBar.transform.localScale.x;
     }
 
-    private void FixedUpdate() // FixedUpdate에서 호출
-    {
-        currentState.Execute(this);
-    }
-
     public void SetState(IEnemyState newState)
     {
         currentState = newState;
         currentState.Initialize(this);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         health -= damage;
         if (health <= 0)
@@ -105,6 +102,13 @@ public class Enemy : MonoBehaviour
 
     public void Poison(float duration, int damage)
     {
-        SetState(new PoisonedState(duration, damage));
+        GameObject poisonEffectPrefab = Resources.Load<GameObject>("Prefabs/PoisonEffect");
+        SetState(new PoisonedState(duration, damage, poisonEffectPrefab));
+    }
+
+    public void Burn(float duration, float damage)
+    {
+        GameObject fireEffectPrefab = Resources.Load<GameObject>("Prefabs/FireEffect");
+        SetState(new BurnState(duration, damage, fireEffectPrefab));
     }
 }
