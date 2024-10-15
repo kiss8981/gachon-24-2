@@ -35,25 +35,19 @@ public class PoisonedState : NormalState
         }
     }
 
-    // 상태 실행 메서드
     public override void Execute(Enemy enemy)
     {
         base.Execute(enemy);
-
-        // 독 지속 시간을 감소시킴
         poisonDuration -= Time.deltaTime;
+        enemy.TakeDamage(poisonDamage * Time.deltaTime);
 
-        // 독 데미지를 지속적으로 적에게 가함
-        enemy.TakeDamage(Mathf.CeilToInt(poisonDamage * Time.deltaTime));
-
-        // 독 지속 시간이 끝나면 독 효과를 제거하고 상태를 NormalState로 전환
         if (poisonDuration <= 0)
         {
             if (poisonEffectInstance != null)
             {
-                GameObject.Destroy(poisonEffectInstance); // 독 효과 제거
+                GameObject.Destroy(poisonEffectInstance);
             }
-            enemy.SetState(new NormalState()); // 상태를 NormalState로 전환
+            enemy.SetState(new NormalState());
         }
     }
 }

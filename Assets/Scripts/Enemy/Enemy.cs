@@ -100,7 +100,7 @@ public class Enemy : MonoBehaviour
         SetState(new FrozenState(duration));
     }
 
-    public void Poison(float duration, int damage)
+    public void Poison(float duration, float damage)
     {
         GameObject poisonEffectPrefab = Resources.Load<GameObject>("Prefabs/PoisonEffect");
         SetState(new PoisonedState(duration, damage, poisonEffectPrefab));
