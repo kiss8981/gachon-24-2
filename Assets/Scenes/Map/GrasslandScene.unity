@@ -14365,6 +14365,7 @@ MonoBehaviour:
   enemys:
   - {fileID: 596420081575705287, guid: 456b37ca741cee54f8f754af1a387815, type: 3}
   - {fileID: 2480970315115968787, guid: 39c3119797d2c9c4eb4895cba4c5a3cd, type: 3}
+  - {fileID: 596420081575705287, guid: 3f8e8e597085cd049b7bb3c7a6a097a3, type: 3}
   spawnInterval: 2
 --- !u!1001 &1713782400
 PrefabInstance:
