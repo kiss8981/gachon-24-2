@@ -29,11 +29,11 @@ public class Singleton<T> : MonoBehaviour
         if (_instance == null)
         {
             _instance = this as T;
-            DontDestroyOnLoad(gameObject); // 씬이 바뀌어도 파괴되지 않음
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject); // 중복된 인스턴스 제거
+            Destroy(gameObject);
         }
     }
 }

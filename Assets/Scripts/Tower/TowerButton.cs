@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.EventSystems; // EventSystems 네임스페이스 추가
+using UnityEngine.EventSystems;
 
 public class TowerButton : MonoBehaviour, IPointerDownHandler
 {

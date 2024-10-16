@@ -23,7 +23,7 @@ public class HealthUIManager : MonoBehaviour, IHealthObserver
 
     private void Start()
     {
-        OnHealthChanged(GameManager.Instance.playerHealth); // Initialize the health UI
+        OnHealthChanged(GameManager.Instance.playerHealth);
     }
 
     public void OnHealthChanged(int newHealth)

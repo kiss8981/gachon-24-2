@@ -1,9 +1,21 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+
+public enum EnemyState
+{
+    NormalState,
+    PoisonedState,
+    ElectrifiedState,
+    BurnState,
+    FrozenState,
+    FloatingState
+}
 
 public class Enemy : MonoBehaviour
 {
     public float health;
+    public float maxHealth = 100f;
     public float speed;
     public int target = 0;
     public GameObject healthBar;
@@ -16,25 +28,21 @@ public class Enemy : MonoBehaviour
 
     private IEnemyState currentState;
 
+    public EnemyState state = EnemyState.NormalState;
+
+    private readonly Dictionary<string, GameObject> effectPrefabs =
+        new Dictionary<string, GameObject>();
+
     void Awake()
     {
-        coll = GetComponent<Collider2D>();
+        InitializeComponents();
+        LoadEffectPrefabs();
+    }
 
-        if (coll == null)
-        {
-            coll = gameObject.AddComponent<Collider2D>();
-        }
-
-        rb = GetComponent<Rigidbody2D>();
-
-        if (rb == null)
-        {
-            rb = gameObject.AddComponent<Rigidbody2D>();
-        }
-
-        rb.gravityScale = 0;
-        rb.freezeRotation = true;
-        rb.isKinematic = false;
+    void Start()
+    {
+        SetState(new NormalState());
+        maxHealthBarWidth = healthBar.transform.localScale.x;
     }
 
     void Update()
@@ -43,16 +51,32 @@ public class Enemy : MonoBehaviour
         currentState.Execute(this);
     }
 
-    void Start()
+    private void InitializeComponents()
     {
-        SetState(new NormalState());
+        if (coll == null)
+        {
+            coll = gameObject.AddComponent<Collider2D>();
+        }
 
-        maxHealthBarWidth = healthBar.transform.localScale.x;
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody2D>();
+            rb.gravityScale = 0;
+            rb.freezeRotation = true;
+            rb.isKinematic = false;
+        }
+    }
+
+    private void LoadEffectPrefabs()
+    {
+        effectPrefabs["PoisonEffect"] = Resources.Load<GameObject>("Prefabs/PoisonEffect");
+        effectPrefabs["FireEffect"] = Resources.Load<GameObject>("Prefabs/FireEffect");
     }
 
     public void SetState(IEnemyState newState)
     {
         currentState = newState;
+        state = (EnemyState)Enum.Parse(typeof(EnemyState), newState.GetType().Name);
         currentState.Initialize(this);
     }
 
@@ -80,16 +104,13 @@ public class Enemy : MonoBehaviour
 
     private void healthBarUpdate()
     {
-        healthBarWidth = (float)health / 100 * maxHealthBarWidth;
-
-        // 현재 localScale을 수정
+        healthBarWidth = (health / maxHealth) * maxHealthBarWidth;
         healthBar.transform.localScale = new Vector3(
             healthBarWidth,
             healthBar.transform.localScale.y,
             healthBar.transform.localScale.z
         );
 
-        // 체력바의 위치를 고정된 축을 기준으로 오른쪽으로 이동시키기
         Vector3 healthBarPosition = healthBar.transform.localPosition;
         healthBarPosition.x = -(maxHealthBarWidth - healthBarWidth) / 2;
         healthBar.transform.localPosition = healthBarPosition;
@@ -102,13 +123,16 @@ public class Enemy : MonoBehaviour
 
     public void Poison(float duration, float damage)
     {
-        GameObject poisonEffectPrefab = Resources.Load<GameObject>("Prefabs/PoisonEffect");
-        SetState(new PoisonedState(duration, damage, poisonEffectPrefab));
+        SetState(new PoisonedState(duration, damage, effectPrefabs["PoisonEffect"]));
     }
 
     public void Burn(float duration, float damage)
     {
-        GameObject fireEffectPrefab = Resources.Load<GameObject>("Prefabs/FireEffect");
-        SetState(new BurnState(duration, damage, fireEffectPrefab));
+        SetState(new BurnState(duration, damage, effectPrefabs["FireEffect"]));
+    }
+
+    public void Floating(float duration)
+    {
+        SetState(new FloatingState(duration));
     }
 }

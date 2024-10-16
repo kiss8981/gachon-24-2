@@ -4,7 +4,7 @@ public class BurnState : NormalState
 {
     private float burnDuration;
     private float burnDamage;
-    private GameObject fireEffectInstance; // Reference to the fire effect
+    private GameObject fireEffectInstance;
     private Enemy enemy;
 
     private GameObject fireEffectPrefab;
@@ -21,7 +21,6 @@ public class BurnState : NormalState
         base.Initialize(enemy);
         this.enemy = enemy;
 
-        // Instantiate fire effect on the enemy
         if (fireEffectPrefab != null)
         {
             fireEffectInstance = GameObject.Instantiate(
@@ -29,7 +28,7 @@ public class BurnState : NormalState
                 enemy.transform.position,
                 Quaternion.identity
             );
-            fireEffectInstance.transform.SetParent(enemy.transform); // Make it follow the enemy
+            fireEffectInstance.transform.SetParent(enemy.transform);
         }
     }
 

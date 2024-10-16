@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class KirbyTower : Tower
+public class YasuoTower : Tower
 {
     public GameObject whirlwindPrefab;
     public Transform spawnPoint;
+    public float whirlwindSpeed = 5f;
     public float whirlwindDuration = 5f;
 
     [SerializeField]
@@ -14,19 +15,19 @@ public class KirbyTower : Tower
 
     private void Update()
     {
+        spawnPoint = gameObject.transform;
         if (Time.time >= lastAttackTime + attackCooldown)
         {
             Enemy nearestEnemy = base.FindNearestEnemy();
             if (nearestEnemy != null)
             {
-                spawnPoint = nearestEnemy.transform;
-                SpawnWhirlwind();
+                SpawnWhirlwind(nearestEnemy);
                 lastAttackTime = Time.time;
             }
         }
     }
 
-    private void SpawnWhirlwind()
+    private void SpawnWhirlwind(Enemy targetEnemy)
     {
         GameObject whirlwind = Instantiate(
             whirlwindPrefab,
@@ -34,10 +35,10 @@ public class KirbyTower : Tower
             Quaternion.identity
         );
 
-        Whirlwind whirlwindScript = whirlwind.GetComponent<Whirlwind>();
+        WhirlwindMovement whirlwindScript = whirlwind.GetComponent<WhirlwindMovement>();
         if (whirlwindScript != null)
         {
-            whirlwindScript.SetDuration(whirlwindDuration);
+            whirlwindScript.Initialize(targetEnemy, whirlwindSpeed, whirlwindDuration);
         }
     }
 

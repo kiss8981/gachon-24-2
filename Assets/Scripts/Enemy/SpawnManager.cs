@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnManager : Singleton<SpawnManager>
 {
     public GameObject[] enemys;
-    public float spawnInterval = 2f; // 적 스폰 간격 (초)
+    public float spawnInterval = 2f;
 
     private void Start()
     {
@@ -27,8 +27,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
     int CalculateEnemyCount(int wave)
     {
-        // 예시: 웨이브 수에 따라 적의 수를 계산하는 로직
-        return wave * 5; // 예: 웨이브 수 x 5만큼의 적 스폰
+        return wave * 5;
     }
 
     Vector3 GetSpawnPoint()

@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class XerathTower : Tower
 {
-    public float shockDuration = 3f; // 감전 지속 시간
-    public float shockDamage = 5f; // 감전 데미지
-    public GameObject shockEffectPrefab; // 전기 이펙트 프리팹
+    public float shockDuration = 3f;
+    public float shockDamage = 5f;
+    public GameObject shockEffectPrefab;
 
     [SerializeField]
     private float lastAttackTime = 0f;

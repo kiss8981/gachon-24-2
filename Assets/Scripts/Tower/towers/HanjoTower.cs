@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class HanjoTower : Tower
 {
-    public GameObject arrowPrefab; // Arrow projectile prefab
-    public float projectileSpeed = 10f; // Speed of the arrow
+    public GameObject arrowPrefab;
+    public float projectileSpeed = 10f;
 
     [SerializeField]
     private float lastAttackTime = 0f;
@@ -26,14 +26,12 @@ public class HanjoTower : Tower
 
     public override void Attack(Enemy enemy)
     {
-        // Instantiate an arrow projectile
         GameObject arrow = Instantiate(
             arrowPrefab,
             base.gameObject.transform.position,
             Quaternion.identity
         );
 
-        // Get the Arrow component and set its target and speed
         Arrow arrowScript = arrow.GetComponent<Arrow>();
         if (arrowScript != null)
         {
