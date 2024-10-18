@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,8 +39,15 @@ public class Enemy : MonoBehaviour
     public float invisibleCoolTime; // 은신 쿨타임
     private float invisibleCooldownTimer = 0f; // 은신 쿨타임을 추적하는 변수
     private bool isInvisibleOnCooldown = false; // 쿨타임 중인지 여부
-
     public bool isInvisible = false; // 은신 여부 확인
+
+    [SerializeField]
+    private bool useHealthRegen = false; // 체력 회복 사용 여부
+    public float healthRegenDuration; // 체력 회복 시간
+    public float healthRegenAmount; // 체력 회복량
+    private bool isHealthRegenOnCooldown = false; // 체력 회복 쿨타임 중인지 여부
+    private float healthRegenCooldownTimer = 0f; // 체력 회복 쿨타임을 추적하는 변수
+
     public SpriteRenderer spriteRenderer; // 적의 스프라이트 렌더러
 
     private readonly Dictionary<string, GameObject> effectPrefabs =
@@ -65,6 +73,11 @@ public class Enemy : MonoBehaviour
         if (useInvisible)
         {
             HandleInvisible();
+        }
+
+        if (useHealthRegen)
+        {
+            HandleHealthRegen();
         }
     }
 
@@ -159,6 +172,41 @@ public class Enemy : MonoBehaviour
             isInvisible = true; // 은신 상태 활성화
             isInvisibleOnCooldown = true; // 쿨타임 시작
             invisibleCooldownTimer = invisibleCoolTime; // 쿨타임 설정
+        }
+    }
+
+    private void HandleHealthRegen()
+    {
+        if (isHealthRegenOnCooldown)
+        {
+            healthRegenCooldownTimer -= Time.deltaTime;
+            if (healthRegenCooldownTimer <= 0f)
+            {
+                isHealthRegenOnCooldown = false;
+            }
+        }
+        else if (health < maxHealth)
+        {
+            HealthRegen(healthRegenDuration, healthRegenAmount);
+            isHealthRegenOnCooldown = true;
+            healthRegenCooldownTimer = healthRegenDuration;
+        }
+    }
+
+    public void HealthRegen(float duration, float regenAmount)
+    {
+        StartCoroutine(HealthRegenRoutine(duration, regenAmount));
+    }
+
+    private IEnumerator HealthRegenRoutine(float duration, float regenAmount)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            health += regenAmount * Time.deltaTime;
+            health = Mathf.Min(health, maxHealth); // 체력은 최대 체력 이상으로 회복되지 않음
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
     }
 
