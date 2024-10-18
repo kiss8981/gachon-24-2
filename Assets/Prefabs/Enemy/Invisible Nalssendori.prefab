@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5959110936552409611}
   - component: {fileID: 1996150893205420245}
   m_Layer: 0
-  m_Name: DuunDuunE
+  m_Name: Invisible Nalssendori
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,12 +100,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3690e576a55fc3b499eeba4e669e4908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  maxHealth: 250
-  speed: 0.7
+  health: 50
+  maxHealth: 50
+  speed: 3.2
   target: 0
   healthBar: {fileID: 6295447834604269377}
   state: 0
+  useInvisible: 1
+  invisibleDuration: 2
+  invisibleCoolTime: 5
+  isInvisible: 0
+  spriteRenderer: {fileID: 0}
 --- !u!61 &1996150893205420245
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -141,8 +146,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.21133333}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 0.5}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

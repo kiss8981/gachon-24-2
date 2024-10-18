@@ -9,7 +9,8 @@ public enum EnemyState
     ElectrifiedState,
     BurnState,
     FrozenState,
-    FloatingState
+    FloatingState,
+    InvisibleState
 }
 
 public class Enemy : MonoBehaviour
@@ -30,6 +31,17 @@ public class Enemy : MonoBehaviour
 
     public EnemyState state = EnemyState.NormalState;
 
+    [SerializeField]
+    private bool useInvisible = false; // 은신 사용 여부
+
+    public float invisibleDuration; // 은신 유지 시간
+    public float invisibleCoolTime; // 은신 쿨타임
+    private float invisibleCooldownTimer = 0f; // 은신 쿨타임을 추적하는 변수
+    private bool isInvisibleOnCooldown = false; // 쿨타임 중인지 여부
+
+    public bool isInvisible = false; // 은신 여부 확인
+    public SpriteRenderer spriteRenderer; // 적의 스프라이트 렌더러
+
     private readonly Dictionary<string, GameObject> effectPrefabs =
         new Dictionary<string, GameObject>();
 
@@ -49,6 +61,11 @@ public class Enemy : MonoBehaviour
     {
         healthBarUpdate();
         currentState.Execute(this);
+
+        if (useInvisible)
+        {
+            HandleInvisible();
+        }
     }
 
     private void InitializeComponents()
@@ -64,6 +81,15 @@ public class Enemy : MonoBehaviour
             rb.gravityScale = 0;
             rb.freezeRotation = true;
             rb.isKinematic = false;
+        }
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            if (spriteRenderer == null)
+            {
+                spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+            }
         }
     }
 
@@ -116,6 +142,26 @@ public class Enemy : MonoBehaviour
         healthBar.transform.localPosition = healthBarPosition;
     }
 
+    private void HandleInvisible()
+    {
+        // 쿨타임이 돌고 있는지 확인
+        if (isInvisibleOnCooldown)
+        {
+            invisibleCooldownTimer -= Time.deltaTime;
+            if (invisibleCooldownTimer <= 0f)
+            {
+                isInvisibleOnCooldown = false; // 쿨타임 해제
+            }
+        }
+        else if (!isInvisible) // 쿨타임 중이 아니고, 현재 은신 상태가 아니라면
+        {
+            GoInvisible(invisibleDuration); // 은신 상태로 전환
+            isInvisible = true; // 은신 상태 활성화
+            isInvisibleOnCooldown = true; // 쿨타임 시작
+            invisibleCooldownTimer = invisibleCoolTime; // 쿨타임 설정
+        }
+    }
+
     public void Freeze(float duration)
     {
         SetState(new FrozenState(duration));
@@ -134,5 +180,10 @@ public class Enemy : MonoBehaviour
     public void Floating(float duration)
     {
         SetState(new FloatingState(duration));
+    }
+
+    public void GoInvisible(float duration)
+    {
+        SetState(new InvisibleState(duration));
     }
 }
