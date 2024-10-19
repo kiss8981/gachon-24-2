@@ -23,7 +23,7 @@ public class FrozenState : IEnemyState
         if (freezeTime <= 0)
         {
             enemy.SetState(new NormalState());
-            spriteRenderer.color = Color.white;
+            spriteRenderer.color = enemy.defaultColor;
         }
     }
 }

@@ -48,6 +48,8 @@ public class Enemy : MonoBehaviour
     private bool isHealthRegenOnCooldown = false; // 체력 회복 쿨타임 중인지 여부
     private float healthRegenCooldownTimer = 0f; // 체력 회복 쿨타임을 추적하는 변수
 
+    public Color defaultColor = Color.white;
+
     public SpriteRenderer spriteRenderer; // 적의 스프라이트 렌더러
 
     private readonly Dictionary<string, GameObject> effectPrefabs =
@@ -104,6 +106,8 @@ public class Enemy : MonoBehaviour
                 spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
             }
         }
+
+        defaultColor = spriteRenderer.color;
     }
 
     private void LoadEffectPrefabs()
@@ -124,6 +128,7 @@ public class Enemy : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
+            SpawnManager.Instance.activeEnemies.Remove(gameObject);
             Destroy(gameObject);
         }
     }
@@ -137,6 +142,7 @@ public class Enemy : MonoBehaviour
         else if (other.CompareTag("Finish"))
         {
             GameManager.Instance.TakeDamage(1);
+            SpawnManager.Instance.activeEnemies.Remove(gameObject);
             Destroy(gameObject);
         }
     }

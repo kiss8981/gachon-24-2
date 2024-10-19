@@ -64,7 +64,8 @@ public class TowerManager : Singleton<TowerManager>
     {
         foreach (GameObject tower in TowerList)
         {
-            Destroy(tower.gameObject);
+            if (tower != null)
+                Destroy(tower.gameObject);
         }
         TowerList.Clear();
     }

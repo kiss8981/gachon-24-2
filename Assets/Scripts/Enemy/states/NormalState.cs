@@ -7,7 +7,7 @@ public class NormalState : IEnemyState
 
     public virtual void Initialize(Enemy enemy)
     {
-        wayPoints = MapManager.Instance.wayPoints;
+        wayPoints = GameManager.Instance.mapManager.wayPoints;
         rb = enemy.GetComponent<Rigidbody2D>();
     }
 
@@ -23,7 +23,7 @@ public class NormalState : IEnemyState
             }
             else
             {
-                targetPosition = MapManager.Instance.endPoint.transform.position;
+                targetPosition = GameManager.Instance.mapManager.endPoint.transform.position;
             }
 
             Vector2 newPosition = Vector2.MoveTowards(
